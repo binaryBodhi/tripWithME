@@ -1,0 +1,25 @@
+.navbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  z-index: 1100;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.navbar.top {
+  top: 0;
+  padding-top: env(safe-area-inset-top, 0px);
+  height: calc(60px + env(safe-area-inset-top, 0px));
+}
+
+.navbar.bottom {
+  bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  height: calc(60px + env(safe-area-inset-bottom, 0px));
+}
