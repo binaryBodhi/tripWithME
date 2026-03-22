@@ -18,7 +18,7 @@ const getBaseURL = () => {
     if (storedApi) return storedApi;
 
     // 4. Fallback to default local discovery
-    return `http://${window.location.hostname}:8000`;
+    return window.location.origin;
 };
 
 export const api = axios.create({
