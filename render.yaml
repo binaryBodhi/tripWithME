@@ -14,7 +14,7 @@ services:
         value: 3.12.0
       - key: FRONTEND_URL
         fromService:
-          type: static_site
+          type: web
           name: trip-with-me-ui
           property: url
 
@@ -22,7 +22,7 @@ services:
   - type: web
     name: trip-with-me-ui
     runtime: static
-    rootDirectory: frontend
+    rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
