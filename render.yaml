@@ -2,7 +2,7 @@ services:
   # Backend Web Service
   - type: web
     name: trip-with-me-api
-    env: python
+    runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: ./backend/start.sh
     envVars:
@@ -19,12 +19,12 @@ services:
           property: url
 
   # Frontend Static Site
-  - type: static_site
+  - type: web
     name: trip-with-me-ui
-    env: static
+    runtime: static
     rootDirectory: frontend
     buildCommand: npm install && npm run build
-    publishPath: dist
+    staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
         fromService:
