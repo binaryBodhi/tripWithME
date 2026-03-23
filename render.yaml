@@ -3,6 +3,7 @@ services:
   - type: web
     name: trip-with-me-api
     runtime: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: ./backend/start.sh
     envVars:
