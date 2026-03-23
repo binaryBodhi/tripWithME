@@ -4,8 +4,8 @@
 # Exit on error
 set -e
 
-# Number of workers (usually 2 * cores + 1)
-WORKERS=${WORKERS:-4}
+# Number of workers (use WEB_CONCURRENCY if set, else fallback to 1)
+WORKERS=${WEB_CONCURRENCY:-1}
 PORT=${PORT:-8000}
 
 echo "🚀 Starting FastAPI with Gunicorn ($WORKERS workers) on port $PORT"
