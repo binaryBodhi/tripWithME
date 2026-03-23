@@ -22,7 +22,7 @@ services:
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: frontend/dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
         sync: false # Set this to your backend URL once deployed (e.g., https://trip-with-me-api.onrender.com)
