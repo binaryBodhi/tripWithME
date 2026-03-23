@@ -1,0 +1,33 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: trip-with-me-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: ./backend/start.sh
+    envVars:
+      - key: MONGODB_URL
+        sync: false # Set this in the Render Dashboard under "Environment"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: FRONTEND_URL
+        fromService:
+          type: static_site
+          name: trip-with-me-ui
+          property: url
+
+  # Frontend Static Site
+  - type: static_site
+    name: trip-with-me-ui
+    env: static
+    rootDirectory: frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: trip-with-me-api
+          property: url
