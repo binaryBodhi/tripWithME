@@ -13,10 +13,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.12.0
       - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: trip-with-me-ui
-          property: url
+        sync: false # Set this to your frontend URL once deployed (e.g., https://trip-with-me-ui.onrender.com)
 
   # Frontend Static Site
   - type: web
@@ -27,7 +24,4 @@ services:
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: trip-with-me-api
-          property: url
+        sync: false # Set this to your backend URL once deployed (e.g., https://trip-with-me-api.onrender.com)
