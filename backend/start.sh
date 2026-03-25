@@ -10,7 +10,7 @@ PORT=${PORT:-8000}
 
 echo "🚀 Starting FastAPI with Gunicorn ($WORKERS workers) on port $PORT"
 
-exec gunicorn backend.main:app \
+exec python3 -m gunicorn.app.wsgiapp backend.main:app \
     --workers $WORKERS \
     --worker-class uvicorn.workers.UvicornWorker \
     --bind 0.0.0.0:$PORT \
