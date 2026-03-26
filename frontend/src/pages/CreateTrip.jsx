@@ -7,10 +7,10 @@ import "../styles/CreateTrip.css";
 function CreateTrip() {
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     // Check if we came from "Repeat Trip"
     const initialState = location.state || {};
-    
+
     const [from, setFrom] = useState(initialState.from_location || "");
     const [to, setTo] = useState(initialState.to_location || "");
     const [tripDate, setTripDate] = useState("");
@@ -27,7 +27,7 @@ function CreateTrip() {
             let h = parseInt(hour);
             if (period === "PM" && h !== 12) h += 12;
             if (period === "AM" && h === 12) h = 0;
-            
+
             const timeString = `${h.toString().padStart(2, '0')}:${minute}:00`;
             const combinedDateTimeString = `${tripDate}T${timeString}`;
             const departureDate = new Date(combinedDateTimeString);
@@ -52,20 +52,20 @@ function CreateTrip() {
                 <h1>Create a Trip</h1>
                 <div className="form-group">
                     <label>From</label>
-                    <input 
-                        type="text" 
-                        value={from} 
-                        onChange={(e) => setFrom(e.target.value)} 
+                    <input
+                        type="text"
+                        value={from}
+                        onChange={(e) => setFrom(e.target.value)}
                         placeholder="Departure City"
                         required
                     />
                 </div>
                 <div className="form-group">
                     <label>To</label>
-                    <input 
-                        type="text" 
-                        value={to} 
-                        onChange={(e) => setTo(e.target.value)} 
+                    <input
+                        type="text"
+                        value={to}
+                        onChange={(e) => setTo(e.target.value)}
                         placeholder="Destination City"
                         required
                     />
@@ -73,10 +73,10 @@ function CreateTrip() {
                 <div className="form-row">
                     <div className="form-group flex-1">
                         <label>Departure Date</label>
-                        <input 
-                            type="date" 
-                            value={tripDate} 
-                            onChange={(e) => setTripDate(e.target.value)} 
+                        <input
+                            type="date"
+                            value={tripDate}
+                            onChange={(e) => setTripDate(e.target.value)}
                             required
                         />
                     </div>
@@ -101,9 +101,8 @@ function CreateTrip() {
                         </div>
                     </div>
                 </div>
-                
+
                 <div className="form-footer">
-                    <button type="button" className="add-button" onClick={() => alert("Add clicked")}>Add</button>
                     <button type="submit" className="submit-button">Create Trip</button>
                 </div>
             </form>
