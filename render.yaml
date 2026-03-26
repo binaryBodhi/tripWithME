@@ -18,7 +18,7 @@ services:
 
   # Frontend Static Site
   - type: web
-    name: trip-with-me-ui
+    name: starttripwithme
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
