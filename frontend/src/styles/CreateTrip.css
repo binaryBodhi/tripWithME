@@ -51,6 +51,7 @@
 
 .flex-1 {
   flex: 1;
+  min-width: 0;
 }
 
 .form-group label {
@@ -68,6 +69,8 @@
   color: var(--text-primary);
   outline: none;
   transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-group input:focus,
@@ -78,18 +81,29 @@
 .time-picker-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .time-picker-row select {
-  padding: 12px 8px;
+  padding: 12px 0;
   border: 1px solid var(--border-light);
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 14px;
   outline: none;
   background: var(--bg-primary);
   color: var(--text-primary);
   flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.time-picker-row select:hover {
+  background-color: var(--bg-secondary);
 }
 
 .time-separator {
@@ -100,7 +114,7 @@
 .form-footer {
   margin-top: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 
