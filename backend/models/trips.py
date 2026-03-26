@@ -15,6 +15,7 @@ class Trip(Document):
     to_location: str
     departure_date: datetime
     creator_name: Optional[str] = None
+    creator_phone: Optional[str] = None
 
     # Trip lifecycle
     status: str = Field(default="created")

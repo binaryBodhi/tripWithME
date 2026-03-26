@@ -14,7 +14,7 @@ async def create_trip(payload: trip_schema.TripCreateSchema, current_user: User 
 
 @router.get("/", response_model=List[trip_schema.TripResponseSchema])
 async def search_trips(q: str = None, current_user: User = Depends(get_current_user)):
-    return await trip_controller.search_trips(q)
+    return await trip_controller.search_trips(q, current_user)
 
 @router.get("/previous", response_model=List[trip_schema.TripResponseSchema])
 async def get_previous_trips(current_user: User = Depends(get_current_user)):
@@ -22,7 +22,7 @@ async def get_previous_trips(current_user: User = Depends(get_current_user)):
 
 @router.get("/{trip_id}", response_model=trip_schema.TripResponseSchema)
 async def get_trip(trip_id: str, current_user: User = Depends(get_current_user)):
-    return await trip_controller.get_trip_by_id(trip_id)
+    return await trip_controller.get_trip_by_id(trip_id, current_user)
 
 @router.post("/{trip_id}/join", response_model=trip_schema.TripResponseSchema)
 async def join_trip(trip_id: str, current_user: User = Depends(get_current_user)):

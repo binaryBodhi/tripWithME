@@ -14,11 +14,13 @@ from backend.repositories import trip_repository, notification_repository
 from backend.schemas import trip_schema
 
 
-async def enrich_trip(trip: Trip) -> Trip:
+async def enrich_trip(trip: Trip, current_user: User = None) -> Trip:
     """Enrich a trip with creator name and pending passenger details for serialization."""
     creator = await User.get(trip.creator_id)
     if creator:
         trip.creator_name = f"{creator.first_name} {creator.last_name}"
+        if current_user and (current_user.id == creator.id or current_user.id in trip.passengers):
+            trip.creator_phone = creator.phone_number
     
     enriched_pending = []
     for p_id in trip.pending_passengers:
@@ -81,7 +83,7 @@ async def join_trip(trip_id: str, current_user: User) -> Trip:
     )
     await notification_repository.create_notification(notif)
     
-    return await enrich_trip(trip)
+    return await enrich_trip(trip, current_user)
 
 
 async def accept_join(trip_id: str, user_id: str, current_user: User) -> Trip:
@@ -114,7 +116,7 @@ async def accept_join(trip_id: str, user_id: str, current_user: User) -> Trip:
     )
     await notification_repository.create_notification(notif)
     
-    return await enrich_trip(trip)
+    return await enrich_trip(trip, current_user)
 
 
 async def reject_join(trip_id: str, user_id: str, current_user: User) -> Trip:
@@ -132,7 +134,7 @@ async def reject_join(trip_id: str, user_id: str, current_user: User) -> Trip:
         await trip_repository.update_trip(trip)
     
     # Silent rejection - no notification
-    return await enrich_trip(trip)
+    return await enrich_trip(trip, current_user)
 
 
 async def leave_trip(trip_id: str, current_user: User) -> Trip:
@@ -141,7 +143,7 @@ async def leave_trip(trip_id: str, current_user: User) -> Trip:
         raise HTTPException(status_code=404, detail="Trip not found")
 
     if current_user.id not in trip.passengers:
-        return await enrich_trip(trip)
+        return await enrich_trip(trip, current_user)
 
     trip.passengers.remove(current_user.id)
     await trip_repository.update_trip(trip)
@@ -157,7 +159,7 @@ async def leave_trip(trip_id: str, current_user: User) -> Trip:
     )
     await notification_repository.create_notification(notif)
     
-    return await enrich_trip(trip)
+    return await enrich_trip(trip, current_user)
 
 
 async def cancel_trip(trip_id: str, current_user: User) -> Trip:
@@ -184,7 +186,7 @@ async def cancel_trip(trip_id: str, current_user: User) -> Trip:
             )
             await notification_repository.create_notification(notif)
             
-    return await enrich_trip(trip)
+    return await enrich_trip(trip, current_user)
 
 
 async def complete_trip(trip_id: str, current_user: User) -> Trip:
@@ -212,28 +214,28 @@ async def complete_trip(trip_id: str, current_user: User) -> Trip:
             )
             await notification_repository.create_notification(notif)
             
-    return await enrich_trip(trip)
+    return await enrich_trip(trip, current_user)
 
 
-async def search_trips(query: str = None) -> List[Trip]:
+async def search_trips(query: str = None, current_user: User = None) -> List[Trip]:
     trips = await trip_repository.search_trips(query)
     enriched = []
     for trip in trips:
-        enriched.append(await enrich_trip(trip))
+        enriched.append(await enrich_trip(trip, current_user))
     return enriched
 
 
-async def get_trip_by_id(trip_id: str) -> Trip:
+async def get_trip_by_id(trip_id: str, current_user: User = None) -> Trip:
     trip = await trip_repository.get_trip_by_id(trip_id)
     if not trip:
         raise HTTPException(status_code=404, detail="Trip not found")
     
-    return await enrich_trip(trip)
+    return await enrich_trip(trip, current_user)
 
 
 async def get_previous_trips(current_user: User) -> List[Trip]:
     trips = await trip_repository.get_user_previous_trips(current_user.id)
     enriched = []
     for trip in trips:
-        enriched.append(await enrich_trip(trip))
+        enriched.append(await enrich_trip(trip, current_user))
     return enriched

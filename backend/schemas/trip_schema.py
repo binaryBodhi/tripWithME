@@ -12,6 +12,7 @@ class TripResponseSchema(BaseModel):
     id: PydanticObjectId
     creator_id: PydanticObjectId
     creator_name: Optional[str] = None
+    creator_phone: Optional[str] = None
     passengers: List[PydanticObjectId]
     pending_passengers: List[dict] = []
     from_location: str

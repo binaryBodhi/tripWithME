@@ -144,6 +144,12 @@ function TripDetails() {
                         <p>{trip.creator_name || "Unknown"}</p>
                     </div>
                     <div className="info-item">
+                        <label>Creator Phone</label>
+                        <p style={{ color: trip.creator_phone ? 'inherit' : 'var(--text-secondary)', fontStyle: trip.creator_phone ? 'normal' : 'italic' }}>
+                            {trip.creator_phone || "Hidden until approved 🔒"}
+                        </p>
+                    </div>
+                    <div className="info-item">
                         <label>Passengers</label>
                         <p>{trip.passengers.length}</p>
                     </div>
