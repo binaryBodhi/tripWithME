@@ -8,3 +8,6 @@ export const createUser = (data) =>
 
 export const getCurrentUser = () => 
   api.get("/users/me");
+
+export const updateUser = (data) =>
+  api.put("/users/update_me", data);

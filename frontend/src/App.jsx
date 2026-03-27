@@ -6,6 +6,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Welcome from './pages/Welcome.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
+import AdditionalDetails from './pages/AdditionalDetails.jsx'
 
 import Search from './pages/Search.jsx'
 import CreateTrip from './pages/CreateTrip.jsx'
@@ -29,6 +30,7 @@ function App() {
 
                     <Route element={<ProtectedRoute />}>
                         <Route element={<AppLayout />}>
+                            <Route path="/additional-details" element={<AdditionalDetails />} />
                             <Route path="/search" element={<Search />} />
                             <Route path="/create-trip" element={<CreateTrip />} />
                             <Route path="/trips/:tripId" element={<TripDetails />} />

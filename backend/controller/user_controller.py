@@ -53,9 +53,7 @@ async def create_user(userData: user_schema.UserCreateSchema):
 
         user = User(
             email=userData.email,
-            password=hash_password(userData.password), # later: hash here
-            age=userData.age,
-            sex=userData.sex,
+            password=hash_password(userData.password), 
             phone_number=userData.phone_number,
             first_name=userData.first_name,
             last_name=userData.last_name,

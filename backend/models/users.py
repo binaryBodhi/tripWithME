@@ -8,8 +8,16 @@ class User(Document):
     # Basic identity
     first_name: str = Field(..., min_length=1, max_length=50)
     last_name: str = Field(..., min_length=1, max_length=50)
-    age: Optional[str] = None
-    sex: Optional[str] = None
+    dob: Optional[datetime] = None
+    gender: Optional[str] = None
+    
+    @property
+    def age(self) -> Optional[int]:
+        if not self.dob:
+            return None
+        today = datetime.now(timezone.utc).date()
+        dob_date = self.dob.date()
+        return today.year - dob_date.year - ((today.month, today.day) < (dob_date.month, dob_date.day))
 
     # Auth / contact
     email: Annotated[EmailStr, Indexed(unique=True)]
