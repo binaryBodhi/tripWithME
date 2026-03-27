@@ -1,4 +1,5 @@
 # HTTP Layer imports
+import asyncio
 import datetime
 from fastapi import HTTPException, status
 from typing import List
@@ -23,16 +24,27 @@ async def enrich_trip(trip: Trip, current_user: User = None) -> Trip:
             trip.creator_phone = creator.phone_number
     
     enriched_pending = []
+    user_fetch_tasks = []
+    
+    async def fetch_user(p_id):
+        user = await User.get(p_id)
+        if user:
+            return {
+                "id": str(user.id),
+                "name": f"{user.first_name} {user.last_name}"
+            }
+        return None
+
     for p_id in trip.pending_passengers:
         if isinstance(p_id, dict):
             enriched_pending.append(p_id)
-            continue
-        user = await User.get(p_id)
-        if user:
-            enriched_pending.append({
-                "id": str(user.id),
-                "name": f"{user.first_name} {user.last_name}"
-            })
+        else:
+            user_fetch_tasks.append(fetch_user(p_id))
+            
+    if user_fetch_tasks:
+        results = await asyncio.gather(*user_fetch_tasks)
+        enriched_pending.extend([r for r in results if r])
+        
     trip.pending_passengers = enriched_pending
     return trip
 
@@ -219,10 +231,11 @@ async def complete_trip(trip_id: str, current_user: User) -> Trip:
 
 async def search_trips(query: str = None, current_user: User = None) -> List[Trip]:
     trips = await trip_repository.search_trips(query)
-    enriched = []
-    for trip in trips:
-        enriched.append(await enrich_trip(trip, current_user))
-    return enriched
+    if not trips:
+        return []
+    
+    enriched = await asyncio.gather(*(enrich_trip(trip, current_user) for trip in trips))
+    return list(enriched)
 
 
 async def get_trip_by_id(trip_id: str, current_user: User = None) -> Trip:
@@ -235,7 +248,8 @@ async def get_trip_by_id(trip_id: str, current_user: User = None) -> Trip:
 
 async def get_previous_trips(current_user: User) -> List[Trip]:
     trips = await trip_repository.get_user_previous_trips(current_user.id)
-    enriched = []
-    for trip in trips:
-        enriched.append(await enrich_trip(trip, current_user))
-    return enriched
+    if not trips:
+        return []
+        
+    enriched = await asyncio.gather(*(enrich_trip(trip, current_user) for trip in trips))
+    return list(enriched)
