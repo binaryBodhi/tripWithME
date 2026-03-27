@@ -18,6 +18,17 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showToast("Please enter a valid email format.", "error");
+            return;
+        }
+        if (password.length < 6) {
+            showToast("Password must be at least 6 characters.", "error");
+            return;
+        }
+
         try {
             const res = await loginUser({ email, password });
             localStorage.setItem('token', res.data.token);
@@ -34,12 +45,13 @@ function Login() {
         <div className="auth-container">
             <form className="auth-form" onSubmit={handleSubmit}>
                 <h1>Log In to TripWith<span className="brand-me">ME</span></h1>
-                <input value={email} placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
+                <input type="email" value={email} placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} required />
                 <input
                 type="password"
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
                 />
                 <button type="submit">Login</button>
                 <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
