@@ -18,8 +18,7 @@ function Profile() {
         first_name: user?.first_name || '',
         last_name: user?.last_name || '',
         phone_number: user?.phone_number || '',
-        age: user?.age || '',
-        sex: user?.sex || 'other'
+        gender: user?.gender || ''
     });
 
     const handleChange = (e) => {
@@ -33,8 +32,7 @@ function Profile() {
                 first_name: user.first_name || '',
                 last_name: user.last_name || '',
                 phone_number: user.phone_number || '',
-                age: user.age || '',
-                sex: user.sex || 'other'
+                gender: user.gender || ''
             });
         }
     }, [user]);
@@ -102,11 +100,11 @@ function Profile() {
                             </div>
                             <div className="info-item">
                                 <span className="info-label">Age</span>
-                                <span className="info-value">{user.age || 'Not set'}</span>
+                                <span className="info-value">{user.age != null ? user.age : 'Not set'}</span>
                             </div>
                             <div className="info-item">
                                 <span className="info-label">Gender</span>
-                                <span className="info-value" style={{ textTransform: 'capitalize' }}>{user.sex || 'Not set'}</span>
+                                <span className="info-value" style={{ textTransform: 'capitalize' }}>{user.gender || 'Not set'}</span>
                             </div>
                         </div>
                         <button className="edit-btn" onClick={() => setIsEditing(true)}>
@@ -144,21 +142,13 @@ function Profile() {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Age</label>
-                                <input 
-                                    name="age"
-                                    type="number"
-                                    value={formData.age} 
-                                    onChange={handleChange}
-                                    placeholder="Enter age"
-                                />
-                            </div>
-                            <div className="form-group">
                                 <label>Gender</label>
-                                <select name="sex" value={formData.sex} onChange={handleChange}>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
+                                <select name="gender" value={formData.gender} onChange={handleChange}>
+                                    <option value="" disabled>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
                                 </select>
                             </div>
                         </div>

@@ -14,6 +14,9 @@ class UserLoginSchema(BaseModel):
     email: str
     
 class UserUpdateDetailsSchema(BaseModel):
+    first_name: str | None = None
+    last_name: str | None = None
+    phone_number: str | None = None
     dob: datetime | None = None
     gender: str | None = None
     
