@@ -32,6 +32,11 @@ function CreateTrip() {
             const combinedDateTimeString = `${tripDate}T${timeString}`;
             const departureDate = new Date(combinedDateTimeString);
 
+            if (departureDate < new Date()) {
+                showToast("Departure time cannot be in the past", "error");
+                return;
+            }
+
             await createTrip({
                 from_location: from,
                 to_location: to,

@@ -49,7 +49,7 @@ function Search() {
         navigate("/create-trip");
     }
 
-    const upcomingTrips = trips.filter(trip => isJoined(trip));
+    const upcomingTrips = trips.filter(trip => isJoined(trip) || isPending(trip));
 
     const matchesQuery = (trip) => {
         if (!searchQuery) return true;
@@ -99,6 +99,9 @@ function Search() {
                 )}
                 {user && trip.passengers.includes(user.id || user._id) && (
                     <span className="joined-tag">Joined</span>
+                )}
+                {user && isPending(trip) && (
+                    <span className="pending-tag">Pending</span>
                 )}
             </div>
         </div>
